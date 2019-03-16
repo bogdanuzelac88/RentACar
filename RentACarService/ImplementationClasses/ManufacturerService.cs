@@ -3,19 +3,24 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.ServiceModel;
+using System.ServiceModel.Description;
+
 
 
 namespace RentACarService
 {
-    class ManufacturerService : IManufacturerService
+
+   public class ManufacturerService : IManufacturerService
     {
         SqlConnection sqlConnection;
         SqlCommand sqlCommand;
         SqlDataReader reader;
+        private static readonly log4net.ILog Logger = new log4net.LogManager.GetLogger();
 
         public void AddNewManufacturer(Manufacturer manufacturer)
         {
-            using (sqlConnection = new SqlConnection(Constants.CONNECTION_STRING))
+            using (sqlConnection = new SqlConnection(Helper.CONNECTION_STRING))
             {
                 try
                 {
@@ -48,7 +53,7 @@ namespace RentACarService
 
         public List<Manufacturer> GetManufacturers()
         {
-            using (sqlConnection = new SqlConnection(Constants.CONNECTION_STRING))
+            using (sqlConnection = new SqlConnection(Helper.CONNECTION_STRING))
             {
                 List<Manufacturer> manufacturers = new List<Manufacturer>();
                 sqlCommand = new SqlCommand();
@@ -67,7 +72,8 @@ namespace RentACarService
                         {
                             manufacturer.Logo = (byte[])reader["Logo"];
                         }
-                        IModelService modelService = new ModelService(); 
+                        ModelService modelService = new ModelService();
+
                         manufacturer.Models = modelService.GetModels(manufacturer.Id);
                         manufacturers.Add(manufacturer);
                     }

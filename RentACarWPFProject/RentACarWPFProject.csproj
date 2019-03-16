@@ -40,21 +40,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\RelayComand.cs" />
-    <Compile Include="Connected Services\ManufacturerService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Connected Services\ModelService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Connected Services\VehicleService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Controls\RentACarWindow.xaml.cs">
       <DependentUpon>RentACarWindow.xaml</DependentUpon>
     </Compile>
@@ -132,66 +117,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="ClassDiagram2.cd" />
-    <None Include="Connected Services\ManufacturerService\Common.Models.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\ManufacturerService\RentACarWPFProject.ManufacturerService.AddNewManufacturerResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\ManufacturerService\RentACarWPFProject.ManufacturerService.GetManufacturersResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\ManufacturerService\service.wsdl" />
-    <None Include="Connected Services\ManufacturerService\service.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\ManufacturerService\service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\ModelService\Common.Models.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\ModelService\RentACarWPFProject.ModelService.AddNewModelResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\ModelService\RentACarWPFProject.ModelService.GetModelsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\ModelService\service.wsdl" />
-    <None Include="Connected Services\ModelService\service.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\ModelService\service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\VehicleService\RentACarWPFProject.VehicleService.AddNewCarResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\VehicleService\RentACarWPFProject.VehicleService.DeleteCarResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\VehicleService\RentACarWPFProject.VehicleService.GetCarByManufacturerResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\VehicleService\RentACarWPFProject.VehicleService.GetCarByModelResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\VehicleService\RentACarWPFProject.VehicleService.GetCarsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\VehicleService\RentACarWPFProject.VehicleService.UpdateCarResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\VehicleService\VehicleService.wsdl" />
-    <None Include="Connected Services\VehicleService\VehicleService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\VehicleService\VehicleService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\VehicleService\VehicleService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\Common.Models.Car.datasource" />
     <None Include="Properties\DataSources\Common.Models.CarModel.datasource" />
@@ -233,14 +158,22 @@
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -260,53 +193,13 @@
       <Project>{152a761d-ab2a-4c1b-ad48-6cf29efb0bae}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RentACarService\RentACarService.csproj">
+      <Project>{6fad6760-a866-4b71-8749-77b5046a7912}</Project>
+      <Name>RentACarService</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\ManufacturerService\" />
-    <WCFMetadataStorage Include="Connected Services\ModelService\" />
-    <WCFMetadataStorage Include="Connected Services\VehicleService\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\ManufacturerService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\ManufacturerService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\ManufacturerService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\ModelService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\ModelService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\ModelService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\VehicleService\VehicleService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\VehicleService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\VehicleService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\VehicleService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

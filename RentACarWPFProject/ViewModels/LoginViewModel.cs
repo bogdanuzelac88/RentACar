@@ -4,6 +4,7 @@ using RentACarWPFProject.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -115,7 +116,17 @@ namespace RentACarWPFProject.ViewModels
         {
             try
             {
-                Window loginWindow = (Window)param;
+                //Window loginWindow = (Window)param;
+                //using (ServiceHost service = new ServiceHost(typeof(IVehicleService), VehicleUri))
+                //{
+                //    IVehicleService vehicle = new VehicleService();
+                //    service.Open();
+                //    int result = vehicle.DeleteCar(car);
+                //    if (result > 0)
+                //        MessageBox.Show("Car successfully deleted.");
+                //    else
+                //        MessageBox.Show("Something went wrong.");
+                //}
                 //using (RentACarServiceReference.Service1Client service = new RentACarServiceReference.Service1Client())
                 //{
                 //    Person customer = new Person();

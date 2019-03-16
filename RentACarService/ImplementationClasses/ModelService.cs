@@ -2,25 +2,23 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Common.Models;
+
 
 namespace RentACarService
 {
-    class ModelService : IModelService
+   public class ModelService : IModelService
     {
-
         SqlConnection sqlConnection;
         SqlCommand sqlCommand;
         SqlDataReader reader;
         List<CarModel> models;
         CarModel model;
+        private static readonly log4net.ILog Logger = new log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public void AddNewModel(CarModel model)
         {
-            using (sqlConnection = new SqlConnection(Constants.CONNECTION_STRING))
+            using (sqlConnection = new SqlConnection(Helper.CONNECTION_STRING))
             {
                 try
                 {
@@ -52,26 +50,28 @@ namespace RentACarService
         {
             models = new List<CarModel>();
             model = new CarModel();
-            using (sqlConnection = new SqlConnection(Constants.CONNECTION_STRING))
+            using (sqlConnection = new SqlConnection(Helper.CONNECTION_STRING))
             {
                 try
                 {
                     sqlCommand = new SqlCommand() { Connection = sqlConnection, CommandType = CommandType.Text };
+                    sqlConnection.Open();
                     sqlCommand.CommandText = "SELECT * FROM Model WHERE Id_Manufacturer = @Id";
                     sqlCommand.Parameters.AddWithValue("@Id", manufacturerId);
                     reader = sqlCommand.ExecuteReader();
-                    if (!reader.HasRows)
+                    if (reader.RecordsAffected > 0 && !reader.HasRows)
                     {
                         model.Id = (int)reader["id"];
                         model.Name = (string)reader["Name"];
                         model.Year = (int)reader["Year"];
                         model.ManufacturerId = (int)reader["Id_Manufacturer"];
+                        Lo
                         models.Add(model);
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex);
                     throw;
                 }
             }

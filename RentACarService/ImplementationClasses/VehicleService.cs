@@ -2,24 +2,20 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using Common.Models;
 
 namespace RentACarService
 {
-   
    public class VehicleService : IVehicleService
     {
         private SqlConnection sqlConnection;
         private SqlCommand sqlCommand;
         private SqlDataReader reader;
+        private static readonly log4net.ILog Logger = new log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public void AddNewCar(Car car)
         {
-            using (sqlConnection = new SqlConnection(Constants.CONNECTION_STRING))
+            using (sqlConnection = new SqlConnection(Helper.CONNECTION_STRING))
             {
                 sqlCommand = new SqlCommand();
                 sqlCommand.Connection = sqlConnection;
@@ -53,7 +49,7 @@ namespace RentACarService
         public int DeleteCar(Car car)
         {
             int carDelete = 0;
-            using (sqlConnection = new SqlConnection(Constants.CONNECTION_STRING))
+            using (sqlConnection = new SqlConnection(Helper.CONNECTION_STRING))
             {
                 sqlCommand = new SqlCommand("DELETE FROM Car WHERE Id = @id", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@id", car.Id);
@@ -94,7 +90,7 @@ namespace RentACarService
 
         private List<Car> GetSQLCommand(SqlCommand sqlCommand)
         {
-            using (sqlConnection = new SqlConnection(Constants.CONNECTION_STRING))
+            using (sqlConnection = new SqlConnection(Helper.CONNECTION_STRING))
             {
                 List<Car> cars = new List<Car>();
                 sqlCommand.Connection = sqlConnection;
@@ -125,7 +121,7 @@ namespace RentACarService
         public int UpdateCar(Car car)
         {
             int carUpdate = 0;
-            using (sqlConnection = new SqlConnection(Constants.CONNECTION_STRING))
+            using (sqlConnection = new SqlConnection(Helper.CONNECTION_STRING))
             {
                 try
                 {

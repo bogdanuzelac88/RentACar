@@ -1,9 +1,12 @@
 ﻿using Common.Models;
+using RentACarService;
 using RentACarWPFProject.Commands;
 using RentACarWPFProject.Controls.Views;
 using RentACarWPFProject.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ServiceModel;
+using System.ServiceModel.Description;
 using System.Windows;
 using System.Windows.Input;
 
@@ -16,6 +19,7 @@ namespace RentACarWPFProject.Controls.ViewModels
         private List<Manufacturer> manufactuterList;
         private ICommand loadData, itemClicked;
         public EventHandler SelectionChanged;
+
 
         public TreeViewViewModel()
         {
@@ -71,10 +75,17 @@ namespace RentACarWPFProject.Controls.ViewModels
 
         private void OnLoadedExecute()
         {
-            //using(RentACarServiceReference.Service1Client service = new RentACarServiceReference.Service1Client())
-            //{
-            //    ManufactrerList = service.GetManufacturers();
-            //};
+            using (ServiceHost service = new ServiceHost(typeof(ManufacturerService), ManufacturerUri))
+            {
+                ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
+                smb.HttpGetEnabled = true;
+                smb.MetadataExporter.PolicyVersion = PolicyVersion.Policy15;
+                service.Description.Behaviors.Add(smb);
+                IManufacturerService manufacturer = new ManufacturerService();
+                service.Open();
+                ManufactrerList = manufacturer.GetManufacturers();
+                service.Close();
+            }
         }
 
         public ICommand ItemClicked

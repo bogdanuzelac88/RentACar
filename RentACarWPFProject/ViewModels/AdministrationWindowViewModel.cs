@@ -1,13 +1,11 @@
 ﻿
 using Common.Models;
+using RentACarService;
 using RentACarWPFProject.Commands;
 using RentACarWPFProject.Controls.ViewModels;
 using RentACarWPFProject.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ServiceModel;
+using System.ServiceModel.Description;
 using System.Windows;
 using System.Windows.Input;
 
@@ -56,14 +54,22 @@ namespace RentACarWPFProject.ViewModels
                 MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you wish to delete the selected car ?", "Deletion Confirmation", System.Windows.MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    //using (var service = new CarCrudServiceReference.CarCrudServiceClient())
-                    //{
-                    //    int result = service.DeleteCar(car);
-                    //    if (result > 0)
-                    //        MessageBox.Show("Car successfully deleted.");
-                    //    else
-                    //        MessageBox.Show("Something went wrong.");
-                    //}
+                    using (ServiceHost service = new ServiceHost(typeof(VehicleService), VehicleUri))
+                    {
+                        ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
+                        smb.HttpGetEnabled = true;
+                        smb.MetadataExporter.PolicyVersion = PolicyVersion.Policy15;
+                        service.Description.Behaviors.Add(smb);
+                        IVehicleService vehicle = new VehicleService();
+                        service.Open();
+                        int result = vehicle.DeleteCar(car);
+                        if (result > 0)
+                            MessageBox.Show("Car successfully deleted.");
+                        else
+                            MessageBox.Show("Something went wrong.");
+                        service.Close();
+                    }
+
                     CarDataGridViewModel.LoadData.Execute(null);
                 }
             }

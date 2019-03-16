@@ -47,5 +47,5 @@ namespace Common.Models
             get { return manufacturerId; }
             set { manufacturerId = value; }
         }
-    }
+    } 
 }

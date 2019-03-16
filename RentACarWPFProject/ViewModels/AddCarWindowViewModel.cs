@@ -1,11 +1,14 @@
 ﻿using Common.Models;
 using Microsoft.Win32;
+using RentACarService;
 using RentACarWPFProject.Commands;
 using RentACarWPFProject.Enums;
 using RentACarWPFProject.Views;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.ServiceModel;
+using System.ServiceModel.Description;
 using System.Windows;
 using System.Windows.Input;
 using static RentACarWPFProject.Enums.CarTypeEnumumeration;
@@ -272,7 +275,7 @@ namespace RentACarWPFProject.ViewModels
 
         private void LoadDataExecute()
         {
-            getManufacturers();
+            GetManufacturers();
             if (Editing)
             {
                 CarImage = Car.Image;
@@ -341,31 +344,44 @@ namespace RentACarWPFProject.ViewModels
         {
         }
 
-        private void getManufacturers()
+        private void GetManufacturers()
         {
-            //ChannelFactory<IManucaturer>
-            //using (ManufacturerService.ManufacturerServiceClient wcf = new ManufacturerService.ManufacturerServiceClient())
-            //{
-            //    ManufactrerList = wcf.GetManufacturers();
-            //};
+            using (ServiceHost service = new ServiceHost(typeof(ManufacturerService), ManufacturerUri))
+            {
+                ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
+                smb.HttpGetEnabled = true;
+                smb.MetadataExporter.PolicyVersion = PolicyVersion.Policy15;
+                service.Description.Behaviors.Add(smb);
+                IManufacturerService manufacturer = new ManufacturerService();
+                service.Open();
+                ManufactrerList = manufacturer.GetManufacturers();
+                service.Close();
+            };
         }
 
         ///<summary>method <c>AddNewManufacturerExecute</c> inserts a new manufacturer entry via the wcf service into the database.</summary>
         private void AddNewManufacturerExecute()
         {
-            //using (RentACarServiceReference.Service1Client wcf = new RentACarServiceReference.Service1Client())
-            //{
-            //    Manufacturer manufactrer = new Manufacturer()
-            //    {
-            //        Name = ManufacturerName,
-            //        Logo = ManufacturerLogoImage
-            //    };
+            using (ServiceHost service = new ServiceHost(typeof(ManufacturerService), ManufacturerUri))
+            {
+                Manufacturer manufactrer = new Manufacturer()
+                {
+                    Name = ManufacturerName,
+                    Logo = ManufacturerLogoImage
+                };
 
-            //    wcf.AddNewManufacturer(manufactrer);
-            //    getManufacturers();
-            //    //AddCarWindow acw = new AddCarWindow();
-            //    //acw.grpAddManufacturer.Visibility = Visibility.Collapsed;
-            //}
+                IManufacturerService manufacturer = new ManufacturerService();
+                ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
+                smb.HttpGetEnabled = true;
+                smb.MetadataExporter.PolicyVersion = PolicyVersion.Policy15;
+                service.Description.Behaviors.Add(smb);
+                service.Open();
+                manufacturer.AddNewManufacturer(manufactrer);
+                service.Close();
+                GetManufacturers();
+                //AddCarWindow acw = new AddCarWindow();
+                //acw.grpAddManufacturer.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void AddNewImageExecute(object param)
@@ -396,17 +412,24 @@ namespace RentACarWPFProject.ViewModels
 
         private void AddNewModelExecute()
         {
-            //using (RentACarServiceReference.Service1Client service = new RentACarServiceReference.Service1Client())
-            //{
-            //    CarModel carModel = new CarModel();
-            //    carModel.Name = ModelName;
-            //    carModel.Year = Year;
-            //    carModel.ManufacturerId = SelectedManufacturer.Id;
-            //    service.AddNewModel(carModel);
-            //    getManufacturers();
-            //    AddCarWindow acw = new AddCarWindow();
-            //    acw.grpModel.Visibility = Visibility.Collapsed;
-            //}
+            using (ServiceHost service = new ServiceHost(typeof(ModelService), ModelUri))
+            {
+                ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
+                smb.HttpGetEnabled = true;
+                smb.MetadataExporter.PolicyVersion = PolicyVersion.Policy15;
+                service.Description.Behaviors.Add(smb);
+                IModelService model = new ModelService();
+                service.Open();
+                CarModel carModel = new CarModel();
+                carModel.Name = ModelName;
+                carModel.Year = Year;
+                carModel.ManufacturerId = SelectedManufacturer.Id;
+                model.AddNewModel(carModel);
+                service.Close();
+                GetManufacturers();
+                AddCarWindow acw = new AddCarWindow();
+                acw.grpModel.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void AddNewCarExecute()
@@ -422,32 +445,36 @@ namespace RentACarWPFProject.ViewModels
             car.IdModel = SelectedCarModel.Id;
             car.Type = Cartype;
             car.Kilometers = Kilometers;
+            IVehicleService vehicle = new VehicleService();
             car.Town = Town;
             if (Editing)
             {
                 car.Id = Id;
-                //using (var service = new CarCrudServiceReference.CarCrudServiceClient())
-                //{
-                //    service.UpdateCar(car);
-                //}
+                using (ServiceHost service = new ServiceHost(typeof(VehicleService), VehicleUri))
+                {
+                    ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
+                    smb.HttpGetEnabled = true;
+                    smb.MetadataExporter.PolicyVersion = PolicyVersion.Policy15;
+                    service.Description.Behaviors.Add(smb);
+                    service.Open();
+                    vehicle.UpdateCar(car);
+                    service.Close();
+                }
             }
             else
             {
-                //using (RentACarServiceReference.Service1Client service = new RentACarServiceReference.Service1Client())
-                //{
-                //    service.AddNewCar(car);
-                //}
+                using (ServiceHost service = new ServiceHost(typeof(VehicleService), VehicleUri))
+                {
+                    ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
+                    smb.HttpGetEnabled = true;
+                    smb.MetadataExporter.PolicyVersion = PolicyVersion.Policy15;
+                    service.Description.Behaviors.Add(smb);
+                    service.Open();
+                    vehicle.UpdateCar(car);
+                    service.Close();
+                }
             }
         }
         #endregion
-
-
-
-
-
-
-
-
-
     }
 }
